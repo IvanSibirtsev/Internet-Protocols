@@ -1,0 +1,59 @@
+Switch
+	(config)#vlan 2
+	(config-vlan)#name users
+
+	(config)#vlan 3
+	(config-vlan)#name server
+	
+	(config)#interface fastEthernet 0/4
+	(config-if)#switchport mode access
+	(config-if)#switchport access vlan 3
+
+	(config)#interface range fastEthernet 0/1-3
+	(config-if-range)#switchport mode access
+	(config-if-range)#switchport access vlan 2
+	
+	(config)#int fa0/5
+	(config-if)#switchport mode trunk
+	(config-if)#switchport trunk allowed vlan 2,3
+
+Router3
+	(config)#int fa0/0
+	(config-if)#no shutdown
+	
+	(config)#int fa0/0.2
+	(config-subif)#encapsulation dot1Q 2
+	(config-subif)#ip address 192.168.2.1 255.255.255.0
+	(config-subif)#no shutdown
+
+	
+	(config)#int fa0/0.3
+	(config-subif)#encapsulation dot1Q 3
+	(config-subif)#ip address 192.168.3.1 255.255.255.0
+	(config-subif)#no shutdown
+
+	(config)#interface fastEthernet0/1
+	(config-if)#ip address 213.234.10.2 255.255.255.252
+	(config-if)# no shutdown
+
+	(config)#ip route 0.0.0.0 0.0.0.0 213.234.10.1
+Router1
+	(config)#int fa 0/1
+	(config-if)#ip address 213.234.20.1 255.255.255.252
+	(config-if)#no shutdown
+Router3
+	(config)#int fa 0/1
+	(config-if)#ip nat outside
+	
+	(config)#int fa0/0.2
+	(config-subif)#ip nat inside
+	
+	(config)#int fa0/0.3
+	(config-subif)#ip nat inside
+
+	(config)#ip access-list standard for-nat
+	(config-std-nacl)#permit 192.168.2.0 0.0.0.255
+	(config-std-nacl)#permit 192.168.3.0 0.0.0.255
+
+	(config)#ip nat inside source list for-nat interface fastEthernet 0/1 overload
+	(config)# ip nat inside source static tcp 192.168.3.2. 80 213.234.10.2 80

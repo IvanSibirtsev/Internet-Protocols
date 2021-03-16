@@ -1,0 +1,12 @@
+	(config)#router ospf 1
+	(config-router)#network 2.0.0.0 255.255.255.255 area 1
+
+ASBR1
+	(config)#router bgp 100
+	(config-router)#neighbor 101.0.0.1 remote-as 300
+AS3
+	(config-router)#network 101.0.0.1 mask 255.255.255.255
+	(config-router)#network 101.0.0.2 mask 255.255.255.255
+ASBR1
+	(config)#redistribute ospf 1
+	(config)#redistribute ospf 1 match external 2

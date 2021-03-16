@@ -1,0 +1,41 @@
+Шаг 1.
+
+ R1AR0
+	(config)#router ospf 1
+	(config-router)#router-id 1.1.1.1 
+	(config-router)#network 10.1.1.0 0.0.0.255 area 0 
+	(config-router)#network 10.2.2.0 0.0.0.255 area 0
+ R2AR0
+	(config)#router ospf 1 
+	(config-router)#router-id 2.2.2.2
+	(config-router)#network 10.2.2.0 0.0.0.255 area 0
+	(config-router)#network 10.10.0.0 0.0.255.255 area 0
+ ABR
+	(config)#router ospf 1
+	(config-router)#router-id 1.1.2.2
+	(confif-router)#network 10.0.0.0 0.255.255.255 area 0
+
+Шаг 7.
+	(config)#router rip 
+	(config-router)#version 2 
+	(config-router)#network 10.0.0.0
+	(config)#router ospf 1
+ 	(config-router)#redistribute rip subnets
+
+1. Появились O E2 - маршут сгенерирован не протоколом OSPF и расчитан как через внешнюю метрику.
+2. show ip ospf database external - информация по External link state
+3. External LSA позволяет передавать по автономной системе информацию, которая получена из внешних источников. 
+   Распространяется пограничным маршрутизатором автономной системы(ASBR) в пределах всей автономной системы
+
+Шаг 8.
+	(config)#router ospf 1
+ 	(config-router)#area 1 stub
+Шаг 9.
+	(config)#router ospf 1
+ 	(config-router)#no area 1 stub
+ 	(config-router)#area 1 nssa
+ ABR
+	(config)#router ospf 1
+ 	(config-router)#area 1 nssa
+ 	(config-router)#area 1 nssa default-information-originate
+	(config-router)#redistribute static subnets
