@@ -3,6 +3,7 @@ import subprocess
 from json import loads
 from urllib import request
 import locale
+import argparse
 
 
 ip_regex = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
@@ -117,10 +118,17 @@ def get_route(address: str, os_lang: dict[str, str]):
                 break
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Autonomous Systems tracert')
+    parser.add_argument('-addr', type=str, dest='address',
+                        help='Destination to which utility traces route.')
+    return parser.parse_args()
+
+
 if __name__ == '__main__':
-    site = 'tpu.ru'
+    site = parse_args()
     lang = locale.getdefaultlocale()[0]
     if not SYSTEM_MESSAGES.get(lang):
         print('please enter your cmd lang [ru, en]')
         lang = 'ru_RU' if 'ru' in input() else 'en_EN'
-    get_route(site, SYSTEM_MESSAGES[lang])
+    get_route(site.address, SYSTEM_MESSAGES[lang])
