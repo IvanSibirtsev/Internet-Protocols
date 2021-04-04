@@ -120,7 +120,7 @@ def get_route(address: str, os_lang: dict[str, str]):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Autonomous Systems tracert')
-    parser.add_argument('-addr', type=str, dest='address',
+    parser.add_argument('address', type=str,
                         help='Destination to which utility traces route.')
     return parser.parse_args()
 
