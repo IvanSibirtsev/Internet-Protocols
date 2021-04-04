@@ -7,6 +7,6 @@
     python port_scan.py 1..1000
 либо
 
-    python port_scan 135
+    python port_scan.py 135
 
 ![Demo](scannerDemo.gif)
