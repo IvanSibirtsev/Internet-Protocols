@@ -58,11 +58,11 @@ class Output:
         if self._number == 1:
             self._print_header()
         string = f'{self._number}' + ' ' * (3 - len(str(self._number)))
-        string += ip + self.spaces(self._IP_LEN, len(ip))
-        string += AS + self.spaces(self._AS_LEN, len(AS))
+        string += ip + self._spaces(self._IP_LEN, len(ip))
+        string += AS + self._spaces(self._AS_LEN, len(AS))
         country_city = f'{country}/{city}'
-        string += country_city + self.spaces(self._COUNTRY_CITY_LEN,
-                                             len(country_city))
+        string += country_city + self._spaces(self._COUNTRY_CITY_LEN,
+                                              len(country_city))
         string += provider
         self._number += 1
         print(string)
@@ -73,7 +73,7 @@ class Output:
               'Country/City' + ' ' * 9 + 'Provider')
 
     @staticmethod
-    def spaces(expected: int, actual: int) -> str:
+    def _spaces(expected: int, actual: int) -> str:
         return ' ' * (3 + (expected - actual))
 
 

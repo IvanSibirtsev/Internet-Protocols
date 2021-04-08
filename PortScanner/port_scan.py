@@ -7,10 +7,10 @@ MAX_PORT = 65535
 
 class Args:
     def __init__(self):
-        self.host, self.start, self.end = self.parse_args()
+        self.host, self.start, self.end = self._parse_args()
 
     @staticmethod
-    def parse_args() -> tuple[str, int, int]:
+    def _parse_args() -> tuple[str, int, int]:
         parser = argparse.ArgumentParser(description='TCP port scanner.')
         parser.add_argument('ports', type=str,
                             help='port or range of ports example: 1..100')

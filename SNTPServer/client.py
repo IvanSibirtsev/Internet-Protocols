@@ -17,7 +17,7 @@ class Client:
             print(f'Response received from: {address[0]}:{address[1]}')
         timestamp = SNTP.time_from_client_answer(data)
         time = Timestamp.normal_time(timestamp)
-        print(f'\tTime: {time}')
+        print(f'\treceived time: {time}')
 
 
 def parse_args():
