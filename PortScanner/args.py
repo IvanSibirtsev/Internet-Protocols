@@ -2,6 +2,7 @@ import argparse
 import socket
 import sys
 
+
 MAX_PORT = 65535
 
 
@@ -38,22 +39,3 @@ class Args:
             print(f'Invalid host {args.host}')
             sys.exit()
         return args.host, start, end
-
-
-def port_scan(args: Args):
-    for port in range(args.start, args.end + 1):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.settimeout(0.01)
-            result = sock.connect_ex((args.host, port))
-            if result == 0:
-                spaces = ' ' * (2 + (len(str(MAX_PORT)) - len(str(port))))
-                print(f'Port {port}' + spaces + 'is open')
-
-
-def main():
-    args = Args()
-    port_scan(args)
-
-
-if __name__ == '__main__':
-    main()
