@@ -1,13 +1,13 @@
 # Сканер TCP портов
 
 ## Описание
-Сканер открытых TCP портов
+Сканер открытых TCP/UDP портов c определением некоторых протоколов [http, smtp, pop3, dns, sntp]
 
 ## Запуск
-    python port_scan.py 1..1000
+    python scanner.py -host 8.8.8.8 50..55
 либо
 
-    python port_scan.py 135
+    python port_scan.py -host 8.8.8.8 53
 
 ## Пример работы
 ![Demo](scannerDemo.gif)

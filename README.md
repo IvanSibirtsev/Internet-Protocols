@@ -4,5 +4,6 @@
 
 ## Список практик
 * Cisco - решения заданий Cisco Packet Tracert
-* PortScan - сканер TCP портов
+* PortScan - сканер TCP и UDP портов
+* SNTPServer - SNTP сервер точного времени, который «врет» на заданное число секунд 
 * TracertAS - трассировка автономных систем
