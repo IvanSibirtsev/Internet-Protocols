@@ -5,10 +5,10 @@ from timestamp import Timestamp
 class SNTP:
     """https://tools.ietf.org/html/rfc4330"""
     _HEADER_FORMAT = '> B B B B I I 4s Q Q Q Q'
-    _LEAP_INDICATOR = 0     # no warning
-    _VERSION_NUMBER = 4     # NTP/SNTP version number
-    _MODE = 4   # server
-    _STRATUM = 1    # synchronized
+    _LEAP_INDICATOR = 0  # no warning
+    _VERSION_NUMBER = 4  # NTP/SNTP version number
+    _MODE = 4  # server
+    _STRATUM = 1  # synchronized
     _FIRST_OCTET = _LEAP_INDICATOR << 6 | _VERSION_NUMBER << 3 | _MODE
     CLIENT_REQUEST = '\x1b' + 47 * '\0'
 

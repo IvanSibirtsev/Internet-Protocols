@@ -7,7 +7,7 @@
     python scanner.py -host 8.8.8.8 50..55
 либо
 
-    python port_scan.py -host 8.8.8.8 53
+    python scanner.py -host 8.8.8.8 53
 
 ## Пример работы
 ![Demo](scannerDemo.gif)
