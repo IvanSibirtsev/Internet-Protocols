@@ -17,7 +17,7 @@ class SNTP:
         self._time_delta = time_delta
         self._transmit_time = 0
 
-    def analise_packet(self, received_packet: bytes):
+    def analise_packet(self, received_packet: bytes) -> None:
         self._transmit_time = self._get_transmit_time(received_packet)
 
     def _get_transmit_time(self, received_packet: bytes) -> int:
@@ -30,5 +30,5 @@ class SNTP:
                            Timestamp.time_with_delta(self._time_delta))
 
     @staticmethod
-    def time_from_client_answer(data):
+    def time_from_client_answer(data) -> int:
         return struct.unpack('!12I', data)[10]

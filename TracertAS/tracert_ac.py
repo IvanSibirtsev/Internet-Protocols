@@ -77,7 +77,7 @@ class Output:
         return ' ' * (3 + (expected - actual))
 
 
-def get_as_number_by_ip(ip):
+def get_as_number_by_ip(ip) -> ASResponse:
     inf = loads(request.urlopen('https://ipinfo.io/' + ip + '/json').read())
     return ASResponse(inf)
 
