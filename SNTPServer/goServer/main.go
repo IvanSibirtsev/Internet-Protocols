@@ -7,7 +7,7 @@ import (
 
 func argParse() int {
 	flag.Usage = func() {
-		fmt.Printf("Usage:\n./main [options] hostname\nOptions:\n")
+		fmt.Printf("go run . -d [seconds]")
 		flag.PrintDefaults()
 	}
 	delay := flag.Int("d", 0, "Delay added to real time. Default is 0.")

@@ -23,7 +23,7 @@ class SNTP:
     def _get_transmit_time(self, received_packet: bytes) -> int:
         return struct.unpack(self._HEADER_FORMAT, received_packet)[10]
 
-    def get_server_packet(self):
+    def get_server_packet(self) -> bytes:
         return struct.pack(self._HEADER_FORMAT, self._FIRST_OCTET,
                            self._STRATUM, 0, 0, 0, 0, b'', 0,
                            self._transmit_time, self._received_time,
