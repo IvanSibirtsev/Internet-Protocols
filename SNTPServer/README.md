@@ -4,13 +4,19 @@
 SNTP сервер точного времени, который «врет» на заданное в своём конфигурационном файле число секунд
 
 ## Запуск сервера
-    python server.py -t 1000
+```commandline
+python server.py -d 1000
+```
 либо
-    
-    go run . -d 1000 
+```commandline
+go run . -d 1000
+```
 ## Запуск клиента
-    python client.py localhost
+```commandline
+python client.py localhost
+```
 
 ## Примеры работы
 ![Demo](sntpDemo.gif)
+
 ![Demo](goServerDemo.gif)

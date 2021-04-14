@@ -15,7 +15,7 @@ class Args:
         parser = argparse.ArgumentParser(description='TCP port scanner.')
         parser.add_argument('ports', type=str,
                             help='port or range of ports example: 1..100')
-        parser.add_argument('-host', type=str, dest='host',
+        parser.add_argument('--host', type=str, dest='host',
                             default='localhost', help='host to scan')
         args = parser.parse_args()
         try:

@@ -32,8 +32,8 @@ class Server:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description='SNTP server, that allows to send time with offset')
-    parser.add_argument('-o', '--offset', action='store', default=1858623,
-                        type=int, dest='time_offset',
+    parser.add_argument('-d', '--delay', action='store', default=0,
+                        type=int, dest='delay',
                         help='Time offset to right time in seconds. '
                              'Can be positive or negative number')
     return parser.parse_args()
@@ -43,7 +43,7 @@ def start():
     args = parse_args()
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server:
         server.bind(('localhost', 123))
-        Server(server, args.time_offset).run()
+        Server(server, args.delay).run()
 
 
 if __name__ == '__main__':
