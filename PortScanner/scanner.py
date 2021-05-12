@@ -35,7 +35,7 @@ class POP3:
 
 class HTTP:
     @staticmethod
-    def is_html(packet: bytes) -> bool:
+    def is_http(packet: bytes) -> bool:
         return b'HTTP' in packet
 
 
@@ -50,7 +50,7 @@ class Scanner:
         'SMTP': lambda packet: SMTP.is_smtp(packet),
         'DNS': lambda packet: DNS.is_dns(packet),
         'POP3': lambda packet: POP3.is_pop3(packet),
-        'HTTP': lambda packet: HTTP.is_html(packet),
+        'HTTP': lambda packet: HTTP.is_http(packet),
         'SNTP': lambda packet: SNTP.is_sntp(packet)
     }
 

@@ -118,7 +118,7 @@ def get_route(address: str, os_lang: dict[str, str]):
                 break
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Autonomous Systems tracert')
     parser.add_argument('address', type=str,
                         help='Destination to which utility traces route.')

@@ -20,7 +20,7 @@ class Client:
         print(f'\treceived time: {time}')
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='SNTP client')
     parser.add_argument('server', type=str,
                         help='ntp server to request current time')
