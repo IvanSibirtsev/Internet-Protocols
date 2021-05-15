@@ -61,7 +61,7 @@ func Response(id int64, vk *api.VK) FriendsGetUsersResp {
 
 func printFriends(response FriendsGetUsersResp) {
 	for i, user := range response.Items {
-		userInformation := fmt.Sprintf("%s %s: %s%d", user.FirstName, user.LastName, "id", user)
+		userInformation := fmt.Sprintf("%s %s: %s%d", user.FirstName, user.LastName, "id", user.ID)
 		number := fmt.Sprintf("%d.", i+1)
 		fmt.Println(number, userInformation)
 	}
