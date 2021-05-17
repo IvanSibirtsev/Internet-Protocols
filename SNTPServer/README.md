@@ -17,6 +17,11 @@ python client.py localhost
 ```
 
 ## Примеры работы
+
+### Python
+
 ![Demo](sntpDemo.gif)
+
+### Go
 
 ![Demo](goServerDemo.gif)
