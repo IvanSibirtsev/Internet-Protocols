@@ -1,28 +1,40 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/SevereCloud/vksdk/v2/api"
-	"github.com/SevereCloud/vksdk/v2/object"
 	"github.com/joho/godotenv"
 	"log"
+	"net/http"
 	"os"
 )
 
-type FriendsGetUsersResp struct {
-	Count int                `json:"count"`
-	Items []object.UsersUser `json:"items"`
+type User struct {
+	FirstName       string `json:"first_name"`
+	Id              int    `json:"id"`
+	LastName        string `json:"last_name"`
+	CanAccessClosed bool   `json:"can_access_closed"`
+	IsClosed        bool   `json:"is_closed"`
+}
+
+type Friends struct {
+	Count int    `json:"count"`
+	Items []User `json:"items"`
+}
+
+type Response struct {
+	Response Friends `json:"response"`
 }
 
 func init() {
 	if err := godotenv.Load(); err != nil {
-		log.Print("No .env file found")
+		log.Fatal("No .env file found")
 	}
 }
 
 func main() {
-	printFriends(Response(Id(), api.NewVK(Token())))
+	printFriends(getFriends(Token(), Id()))
 }
 
 func Token() string {
@@ -45,24 +57,29 @@ func Id() int64 {
 	return *id
 }
 
-func Response(id int64, vk *api.VK) FriendsGetUsersResp {
-	var response FriendsGetUsersResp
-	params := api.Params{
-		"user_id": id,
-		"fields":  "nickname",
-	}
-	err := vk.RequestUnmarshal("friends.get", &response, params)
-	if err != nil {
-		log.Fatal(err)
-	}
+func getFriends(token string, id int64) Friends {
+	rawGetFriendsUrl := "https://api.vk.com/method/friends.get?user_id=%d&fields=nickname&access_token=%s&v=5.130"
+	getFriendsUrl := fmt.Sprintf(rawGetFriendsUrl, id, token)
+	resp, err := http.Get(getFriendsUrl)
+	checkError(err)
+	defer resp.Body.Close()
+	var response Response
+	err = json.NewDecoder(resp.Body).Decode(&response)
+	checkError(err)
 
-	return response
+	return response.Response
 }
 
-func printFriends(response FriendsGetUsersResp) {
+func printFriends(response Friends) {
 	for i, user := range response.Items {
-		userInformation := fmt.Sprintf("%s %s: %s%d", user.FirstName, user.LastName, "id", user.ID)
+		userInformation := fmt.Sprintf("%s %s: %s%d", user.FirstName, user.LastName, "id", user.Id)
 		number := fmt.Sprintf("%d.", i+1)
 		fmt.Println(number, userInformation)
+	}
+}
+
+func checkError(err error) {
+	if err != nil {
+		log.Fatal(err)
 	}
 }
