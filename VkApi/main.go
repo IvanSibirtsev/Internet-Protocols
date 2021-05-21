@@ -1,13 +1,15 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
-	"net/http"
 	"os"
+	"regexp"
+	"strings"
 )
 
 type User struct {
@@ -58,16 +60,43 @@ func Id() int64 {
 }
 
 func getFriends(token string, id int64) Friends {
-	rawGetFriendsUrl := "https://api.vk.com/method/friends.get?user_id=%d&fields=nickname&access_token=%s&v=5.130"
-	getFriendsUrl := fmt.Sprintf(rawGetFriendsUrl, id, token)
-	resp, err := http.Get(getFriendsUrl)
+	connection := makeRequest(id, token)
+	var friends Response
+	answer := HandelConnection(connection, "")
+	response := strings.Split(answer, "\r\n\r\n")[1]
+	err := json.Unmarshal([]byte(response), &friends)
 	checkError(err)
-	defer resp.Body.Close()
-	var response Response
-	err = json.NewDecoder(resp.Body).Decode(&response)
-	checkError(err)
+	return friends.Response
+}
 
-	return response.Response
+func makeRequest(id int64, token string) *tls.Conn {
+	host := "api.vk.com"
+	conn, err := tls.Dial("tcp", fmt.Sprintf("%s:443", host), nil)
+	checkError(err)
+	url := fmt.Sprintf("method/friends.get?user_id=%d&fields=nickname&access_token=%s&v=5.130", id, token)
+	request := httpRequest(url, host)
+	_, err = fmt.Fprintf(conn, request)
+	checkError(err)
+	return conn
+}
+
+func httpRequest(url string, host string) string {
+	return fmt.Sprintf("GET /%s HTTP/1.1\nHost: %s\nAccept: */*\n\n", url, host)
+}
+
+func HandelConnection(connection *tls.Conn, acc string) string {
+	reply := make([]byte, 65535)
+	n, _ := connection.Read(reply)
+	ans := fmt.Sprintf(string(reply[:n]), n)
+	if strings.Contains(ans, "}]}}") {
+		return parse(acc + ans)
+	}
+	return HandelConnection(connection, acc+ans)
+}
+
+func parse(answer string) string {
+	re := regexp.MustCompile(`%!\(EXTRA int=[0-9]+\)`)
+	return re.ReplaceAllString(answer, "")
 }
 
 func printFriends(response Friends) {
