@@ -163,3 +163,10 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+*.mod
+*.lock
+*.env
+*.sum
+*.kate-swp
+/VkApi/pkg
+
