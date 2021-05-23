@@ -1,36 +1,35 @@
-from typing import NoReturn
 from decimal import Decimal
 from time import time
 import pickle
 
-from packet import Packet
+from packet import Record
 
 
 class Cache:
-    def __init__(self, cache: dict[str, bytes] = None,
-                 cache_ttl: dict[str, float] = None):
+    def __init__(self, cache=None, cache_ttl=None):
         self._cache = {}
         self._time = {}
         if cache:
             self._cache = cache
             self._time = cache_ttl
 
-    def add(self, name: str, packet: Packet) -> NoReturn:
-        self._cache[name] = packet.raw_data
-        self._time[name] = packet.ans_records[0].ttl + time()
+    def add(self, tup: tuple[str, str], record: Record):
+        self._cache[tup] = record
+        print(tup[0])
+        self._time[tup] = record.ttl + time()
 
-    def __contains__(self, ip: str) -> bool:
+    def __contains__(self, tup: tuple[str, str]) -> bool:
         self._clean()
-        return ip in self._cache
+        return tup in self._cache.keys()
 
-    def __getitem__(self, name: str) -> bytes:
-        if name in self:
-            print(f'This name - {name} was taken from cache.')
-            return self._cache[name]
+    def __getitem__(self, tup: tuple[str, str]) -> Record:
+        if tup in self:
+            print(f'This name - {tup[0]} was taken from cache.')
+            return self._cache[tup]
         else:
-            return b''
+            return b''  # TODO
 
-    def _clean(self) -> NoReturn:
+    def _clean(self):
         names = list(self._cache.keys())
         for record in names:
             if Decimal(self._time[record]) < Decimal(time()):
@@ -39,15 +38,15 @@ class Cache:
 
     @staticmethod
     def from_dump(filename: str) -> 'Cache':
-        with open(filename, 'rb') as dump:
-            cache = pickle.load(dump)
-        if isinstance(cache, Cache):
+        try:
+            with open(filename, 'rb') as dump:
+                cache = pickle.load(dump)
             print('Get saved cache.')
             return cache
-        else:
+        except EOFError:
             print('No cache.')
             return Cache()
 
-    def dump_to_file(self, filename: str) -> NoReturn:
+    def dump_to_file(self, filename: str):
         with open(filename, 'wb') as dump:
             pickle.dump(self, dump)

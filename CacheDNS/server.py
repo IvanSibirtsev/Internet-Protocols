@@ -1,6 +1,5 @@
-import time
 from socket import socket, AF_INET, SOCK_DGRAM, timeout
-from typing import NoReturn
+import time
 
 from request_handler import RequestHandler
 from config import Config
@@ -19,7 +18,7 @@ class Server:
         server.bind(self._config.local_server_address)
         return server
 
-    def run(self) -> NoReturn:
+    def run(self):
         while True:
             data, address = self._receive_request()
             response = self._handle_request(data)
@@ -40,14 +39,14 @@ class Server:
         return self._handler.handle_query(data)
 
 
-def main() -> NoReturn:
+def main():
     config = Config()
     cache = Cache.from_dump(config.cache_dump)
     request_handler = RequestHandler(config, cache)
     try:
         server = Server(config, request_handler)
         server.run()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         cache.dump_to_file(config.cache_dump)
 
 
