@@ -1,6 +1,7 @@
 import re
 import subprocess
 from json import loads
+from typing import Optional, IO
 from urllib import request
 import locale
 import argparse

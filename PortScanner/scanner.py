@@ -1,5 +1,4 @@
 from concurrent.futures import ThreadPoolExecutor
-from typing import NoReturn
 from struct import pack
 import socket
 
@@ -93,19 +92,19 @@ class Scanner:
         return ''
 
 
-def main(host: str, start: int, end: int) -> NoReturn:
+def main(host: str, start: int, end: int):
     scanner = Scanner(host)
     with ThreadPoolExecutor(max_workers=300) as pool:
         for port in range(start, end + 1):
             pool.submit(execute, scanner, port)
 
 
-def execute(scanner: Scanner, port: int) -> NoReturn:
+def execute(scanner: Scanner, port: int):
     show(scanner.tcp_port(port))
     show(scanner.udp_port(port))
 
 
-def show(result: str) -> NoReturn:
+def show(result: str):
     if result:
         print(result)
 
