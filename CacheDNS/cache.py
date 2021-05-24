@@ -6,15 +6,14 @@ from packet import Record
 
 
 class Cache:
-    def __init__(self, cache=None, cache_ttl=None):
+    def __init__(self):
         self._cache = {}
         self._time = {}
-        if cache:
-            self._cache = cache
-            self._time = cache_ttl
+        self._record_type = {}
 
-    def add(self, tup: tuple[str, str], record: Record):
+    def add(self, tup: tuple[str, str], record: Record, record_type: str):
         self._cache[tup] = record
+        self._record_type[tup] = record_type
         print(tup[0])
         self._time[tup] = record.ttl + time()
 
@@ -22,10 +21,10 @@ class Cache:
         self._clean()
         return tup in self._cache.keys()
 
-    def __getitem__(self, tup: tuple[str, str]) -> Record:
+    def __getitem__(self, tup: tuple[str, str]) -> tuple[Record, str]:
         if tup in self:
             print(f'This name - {tup[0]} was taken from cache.')
-            return self._cache[tup]
+            return self._cache[tup], self._record_type[tup]
         else:
             return b''  # TODO
 
@@ -48,5 +47,5 @@ class Cache:
             return Cache()
 
     def dump_to_file(self, filename: str):
-        with open(filename, 'wb') as dump:
+        with open(filename, 'wb+') as dump:
             pickle.dump(self, dump)

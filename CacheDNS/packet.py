@@ -12,11 +12,10 @@ class Header:
         (self.id, self.option, self.qdcount, self.ancount, self.nscount,
          self.arcount) = unpack('!H H H H H H', self._data)
 
-    def set_response_bits(self, qdcount, ancount, nscount):
+    def set_response_bits(self, ancount, nscount, arcount):
         option = self.option | 16384
-        return (pack('!H', self.id)
-                + pack('! H H H H', option, qdcount, ancount, nscount)
-                + pack('!H', self.arcount))
+        self._data = (pack('! H H H H H H', self.id,
+                           option, self.qdcount, ancount, nscount, arcount))
 
     def __bytes__(self) -> bytes:
         return self._data
@@ -117,8 +116,8 @@ class Packet:
         self.header = Header(self._bytestream)
         self.questions = self._parse_questions(self.header.qdcount)
         self.ans_records = self._parse_records(self.header.ancount)
-        self._auth_records = self._parse_records(self.header.nscount)
-        self._add_records = self._parse_records(self.header.arcount)
+        self.auth_records = self._parse_records(self.header.nscount)
+        self.add_records = self._parse_records(self.header.arcount)
 
     def _parse_questions(self, count: int) -> list[Question]:
         return [Question(Name(self._bytestream, self._data),

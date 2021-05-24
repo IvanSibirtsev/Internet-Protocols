@@ -47,6 +47,7 @@ def main():
         server = Server(config, request_handler)
         server.run()
     except (KeyboardInterrupt, SystemExit):
+        print('Exit. Cache save..')
         cache.dump_to_file(config.cache_dump)
 
 
