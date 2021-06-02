@@ -1,0 +1,15 @@
+{
+  "mail_server": "smtp.yandex.ru",
+  "port": 465,
+  "name": "networkcourse",
+  "mail": "networkcourse@yandex.ru",
+  "password": "",
+  "subject": "ВАЖНО!!!",
+  "recipients": [
+    ""
+  ],
+  "message_file": "./letter/text.txt",
+  "attachments": [
+    "./letter/cat.gif"
+  ]
+}
