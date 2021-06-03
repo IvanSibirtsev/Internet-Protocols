@@ -22,11 +22,8 @@ class Cache:
         return tup in self._cache.keys()
 
     def __getitem__(self, tup: tuple[str, str]) -> tuple[Record, str]:
-        if tup in self:
-            print(f'This name - {tup[0]} was taken from cache.')
-            return self._cache[tup], self._record_type[tup]
-        else:
-            return b''  # TODO
+        print(f'This name - {tup[0]} has taken from cache.')
+        return self._cache[tup], self._record_type[tup]
 
     def _clean(self):
         names = list(self._cache.keys())

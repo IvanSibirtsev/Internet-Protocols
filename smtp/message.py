@@ -17,14 +17,14 @@ class Message:
         self._header = '\n'.join(header)
         self._text = self.get_text(config.message_file)
 
-    def append(self, message):
+    def append(self, message: str):
         self._text += f'--{self._boundary}\n{message}'
 
     def end(self):
         self._text += f'\n--{self._boundary}--\n.\n'
 
     @property
-    def content(self):
+    def content(self) -> str:
         return f'{self._header}\n{self._text}'
 
     @property
@@ -32,9 +32,9 @@ class Message:
         return self._text
 
     @staticmethod
-    def get_text(filename):
-        with open(filename, 'r', encoding='utf8') as f:
-            message = "".join(f.readlines())
+    def get_text(filename: str) -> str:
+        with open(filename, 'r', encoding='utf8') as file:
+            message = "".join(file.readlines())
         return f'Content-Transfer-Encoding: 8bit\n' \
                f'Content-Type: text/plain; charset=utf-8\n\n' \
                f'{message}'

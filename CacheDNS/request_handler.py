@@ -32,11 +32,11 @@ class RequestHandler:
                   packet.ans_records[0].value)
 
             for record in packet.ans_records:
-                self._cache.add((record.name.value, record.ans_type), record, 'ans')
+                self._cache.add((record.name.value, record.type), record, 'ans')
             for record in packet.auth_records:
-                self._cache.add((record.name.value, record.ans_type), record, 'auth')
+                self._cache.add((record.name.value, record.type), record, 'auth')
             for record in packet.add_records:
-                self._cache.add((record.name.value, record.ans_type), record, 'add')
+                self._cache.add((record.name.value, record.type), record, 'add')
 
             response = raw_data
 

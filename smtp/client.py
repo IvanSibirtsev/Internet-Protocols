@@ -43,7 +43,7 @@ class SMTP:
         self.__receive()
 
     def __receive(self):
-        print('Server answer:', self._client.recv(65535)
+        print('Server:', self._client.recv(65535)
               .decode().removesuffix('\n'))
 
 

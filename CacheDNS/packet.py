@@ -12,9 +12,9 @@ class Header:
         (self.id, self.option, self.qdcount, self.ancount, self.nscount,
          self.arcount) = unpack('!H H H H H H', self._data)
 
-    def set_response_bits(self, ancount, nscount, arcount):
+    def set_response_bits(self, ancount: int, nscount: int, arcount: int):
         option = self.option | 16384
-        self._data = (pack('! H H H H H H', self.id,
+        self._data = (pack('!H H H H H H', self.id,
                            option, self.qdcount, ancount, nscount, arcount))
 
     def __bytes__(self) -> bytes:
@@ -86,6 +86,10 @@ class Record:
     @property
     def value(self) -> str:
         return self.rec_data.value
+
+    @property
+    def type(self) -> str:
+        return self.ans_type
 
     def _parse_address(self, length: int, ans_type: str) -> Name:
         if ans_type == 'A':
