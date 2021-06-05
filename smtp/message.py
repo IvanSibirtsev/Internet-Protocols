@@ -16,6 +16,7 @@ class Message:
         ]
         self._header = '\n'.join(header)
         self._text = self.get_text(config.message_file)
+        self._text = self._text.replace('\n.', '\n..')
 
     def append(self, message: str):
         self._text += f'--{self._boundary}\n{message}'
